@@ -5,12 +5,13 @@ const {
   destroy,
   create,
 } = require("../controller/shopping");
+const Authmiddleware = require("../middleware/Authmiddleware");
 const router = require("express").Router();
 
-router.get("/", list);
+router.get("/", Authmiddleware, list);
 router.post("/", create);
-router.get("/:id", show);
+router.get("/:id", Authmiddleware, show);
 router.put("/:id", update);
-router.delete("/:id", destroy);
+router.delete("/:id", Authmiddleware, destroy);
 
 module.exports = router;
