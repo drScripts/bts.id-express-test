@@ -96,6 +96,13 @@ module.exports = async (req, res) => {
       username,
     });
   } catch (err) {
+    if (err?.name === "SequelizeUniqueConstraintError") {
+      return res.status(409).json({
+        status: "error",
+        message: "Email already registered!",
+      });
+    }
+
     console.log(err);
     res.status(500).json({ status: "error", message: "Internal server error" });
   }

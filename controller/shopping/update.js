@@ -1,4 +1,5 @@
 const { request, response } = require("express");
+const Joi = require("joi");
 const { Shopping } = require("../../models");
 
 /**
@@ -11,7 +12,11 @@ module.exports = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const shopping = await Shopping.findByPk(id);
+    const shopping = await Shopping.findByPk(id, {
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
+    });
 
     if (!shopping)
       return res.status(404).json({
@@ -36,7 +41,7 @@ module.exports = async (req, res) => {
       }),
     });
 
-    const validation = scheme.validate(req.body);
+    const validation = scheme.validate(shoppingBody);
 
     if (validation.error)
       return res.status(400).json({
@@ -45,10 +50,10 @@ module.exports = async (req, res) => {
       });
 
     const { name, createddate } = shoppingBody;
-    const updatedShopping = await shopping.update({ name, createddate });
+    await shopping.update({ name, createddate });
 
-    return res.send(201).json({
-      data: updatedShopping,
+    res.status(201).json({
+      data: shopping,
     });
   } catch (err) {
     console.log(err);

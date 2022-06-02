@@ -29,7 +29,7 @@ module.exports = async (req, res) => {
       }),
     });
 
-    const validation = scheme.validate(req.body);
+    const validation = scheme.validate(shopping);
 
     if (validation.error)
       return res.status(400).json({

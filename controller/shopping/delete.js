@@ -13,7 +13,13 @@ module.exports = async (req, res) => {
 
     const shopping = await Shopping.findByPk(id);
 
-    await shopping.delete();
+    if (!shopping)
+      return res.status(404).json({
+        status: "error",
+        message: "Can't find record data with that id!",
+      });
+
+    await shopping.destroy();
 
     return res.status(201).json({
       data: {

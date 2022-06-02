@@ -16,8 +16,7 @@ module.exports = async (req, res) => {
     });
 
     return res.send({
-      status: "success",
-      users,
+      data: users,
     });
   } catch (err) {
     console.log(err);
